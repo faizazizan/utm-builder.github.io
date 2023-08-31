@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UTM Builder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>UTM Builder</h1>
+        <form id="utm-form">
+            <textarea id="urls" rows="10" cols="50" placeholder="Paste website URLs here, one per line"></textarea><br>
+            Source: <input type="text" id="source"><br>
+            Medium: <input type="text" id="medium"><br>
+            Campaign: <input type="text" id="campaign"><br>
+            Content: <input type="text" id="content"><br>
+            Term: <input type="text" id="term"><br>
+            <button type="button" id="generate-btn">Generate UTM URLs</button>
+        </form>
+        <div id="result" style="display:none;"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
