@@ -1,35 +1,42 @@
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("generate-btn").addEventListener("click", function() {
-        const urlsText = document.getElementById("urls").value;
-        const urls = urlsText.split("\n").map(url => url.trim());
-        const utmParams = {
-            utm_source: document.getElementById("source").value,
-            utm_medium: document.getElementById("medium").value,
-            utm_campaign: document.getElementById("campaign").value,
-            utm_content: document.getElementById("content").value,
-            utm_term: document.getElementById("term").value,
-        };
+document.addEventListener("DOMContentLoaded", function () {
+  const generateButton = document.getElementById("generate-btn");
+  const urlsTextarea = document.getElementById("urls");
 
-        const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = "<h2>Generated UTM URLs:</h2>";
-        urls.forEach((url, index) => {
-            const utmUrl = generateUtmUrl(url, utmParams);
-            resultDiv.innerHTML += `<p>${index + 1}. ${url} => ${utmUrl}</p>`;
-        });
-        resultDiv.style.display = "block";
-    });
+  generateButton.addEventListener("click", function () {
+    const urls = urlsTextarea.value.split("\n");
+    const source = document.getElementById("source").value;
+    const medium = document.getElementById("medium").value;
+    const campaign = document.getElementById("campaign").value;
+    const content = document.getElementById("content").value;
+    const term = document.getElementById("term").value;
 
-    function generateUtmUrl(base_url, utm_params) {
-        const parsedUrl = new URL(base_url);
-        const queryParams = new URLSearchParams(parsedUrl.search);
+    let utmUrls = "";
 
-        for (const key in utm_params) {
-            if (utm_params.hasOwnProperty(key) && utm_params[key]) {
-                queryParams.set(key, utm_params[key]);
-            }
+    urls.forEach(function (url) {
+      // Trim leading and trailing spaces from the URL
+      url = url.trim();
+
+      // Check if the URL is not empty
+      if (url.length > 0) {
+        // Add "https://" to the URL if it doesn't already start with it
+        if (!url.startsWith("https://")) {
+          url = "https://" + url;
         }
 
-        parsedUrl.search = queryParams.toString();
-        return parsedUrl.toString();
-    }
+        // Construct the UTM parameters
+        const utmParams = `?utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}&utm_content=${content}&utm_term=${term}`;
+
+        // Append the UTM parameters to the URL
+        const utmUrl = url + utmParams;
+
+        // Append the UTM URL to the result
+        utmUrls += utmUrl + "\n";
+      }
+    });
+
+    // Display the generated UTM URLs in the result div
+    const resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+    resultDiv.innerHTML = `<p>Generated UTM URLs:</p><textarea rows="10" cols="50">${utmUrls}</textarea>`;
+  });
 });
